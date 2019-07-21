@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Configuration status="WARN">
+<Appenders>
+<!-- FOR INFO -->
+<RollingFile ignoreExceptions="false" filePattern="/Logs/EmployeePortal/EmployeePortal-%d{yyyy-MM-dd}-%i.log" fileName="/Logs/EmployeePortal/EmployeePortal.log" name="RollingFile">
+<PatternLayout>
+<Pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} %5p [%t] %C %M %c{1}:%L - %m%n </Pattern>
+</PatternLayout>
+<Policies>
+<SizeBasedTriggeringPolicy size="50KB"/>
+</Policies>
+<DefaultRolloverStrategy max="500"/>
+<Filters>
+<ThresholdFilter onMismatch="NEUTRAL" onMatch="DENY" level="warn"/>
+<ThresholdFilter onMismatch="NEUTRAL" onMatch="DENY" level="error"/>
+<ThresholdFilter onMismatch="NEUTRAL" onMatch="DENY" level="fatal"/>
+<ThresholdFilter onMismatch="DENY" onMatch="ACCEPT" level="info"/>
+</Filters>
+</RollingFile>
+<Console name="ConsoleInfo" target="SYSTEM_OUT">
+<PatternLayout pattern="%highlight{[%-5level]} [%t] [%d{HH:mm:ss.SSS}] [%logger{36}.%M]- %msg%n"/>
+</Console>
+<!-- FOR ERRORS -->
+<RollingFile ignoreExceptions="false" filePattern="/Logs/EmployeePortal/EmployeePortal_err-%d{yyyy-MM-dd}-%i.log" fileName="/Logs/EmployeePortal/EmployeePortal_err.log" name="RollingErrFile">
+<PatternLayout>
+<Pattern>%d{yyyy-MM-dd HH:mm:ss,SSS} %5p [%t] %C %M %c{1}:%L - %m%n </Pattern>
+</PatternLayout>
+<Policies>
+<SizeBasedTriggeringPolicy size="50KB"/>
+</Policies>
+<DefaultRolloverStrategy max="500"/>
+<Filters>
+<!-- First deny warn, error and fatal messages -->
+<ThresholdFilter onMismatch="NEUTRAL" onMatch="ACCEPT" level="warn"/>
+<ThresholdFilter onMismatch="NEUTRAL" onMatch="ACCEPT" level="error"/>
+<ThresholdFilter onMismatch="NEUTRAL" onMatch="ACCEPT" level="fatal"/>
+<ThresholdFilter onMismatch="NEUTRAL" onMatch="DENY" level="info"/>
+</Filters>
+</RollingFile>
+<Console name="ConsoleErr" target="SYSTEM_ERR">
+<PatternLayout pattern="%highlight{[%-5level]} [%t] [%d{HH:mm:ss.SSS}] [%logger{36}.%M]- %msg%n"/>
+</Console>
+</Appenders>
+<Loggers>
+<Logger name="info" level="all" additivity="false">
+<appender-ref level="all" ref="RollingFile"/>
+</Logger>
+<Logger name="error" level="warn" additivity="false">
+<appender-ref level="warn" ref="RollingErrFile"/>
+</Logger>
+<Root level="trace">
+<AppenderRef level="info" ref="ConsoleInfo"/>
+<AppenderRef level="info" ref="RollingFile"/>
+<AppenderRef level="error" ref="ConsoleErr"/>
+<AppenderRef level="error" ref="RollingErrFile"/>
+</Root>
+</Loggers>
+</Configuration>
